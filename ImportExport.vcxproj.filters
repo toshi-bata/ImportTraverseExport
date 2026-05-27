@@ -66,6 +66,9 @@
     <ClCompile Include="visitor\VisitorTree.cpp">
       <Filter>Source Files\visitor</Filter>
     </ClCompile>
+    <ClCompile Include="myTreeVisitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="visitor\A3DVector.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="visitor\VisitorTree.h">
       <Filter>Header Files\visitor</Filter>
+    </ClInclude>
+    <ClInclude Include="myTreeVisitor.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

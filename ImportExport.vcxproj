@@ -91,6 +91,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ImportExport.cpp" />
+    <ClCompile Include="myTreeVisitor.cpp" />
     <ClCompile Include="visitor\BrepTraverse.cpp" />
     <ClCompile Include="visitor\CascadedAttributeConnector.cpp" />
     <ClCompile Include="visitor\MarkupTessConnector.cpp" />
@@ -107,6 +108,7 @@
     <ClCompile Include="visitor\VisitorTree.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="myTreeVisitor.h" />
     <ClInclude Include="visitor\A3DVector.h" />
     <ClInclude Include="visitor\BrepTraverse.h" />
     <ClInclude Include="visitor\CascadedAttributeConnector.h" />
