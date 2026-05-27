@@ -21,9 +21,28 @@
 #include "common.hpp"
 #include <sstream>
 
+#include "visitor/VisitorContainer.h"
+#include "visitor/VisitorTree.h"
+
 static MY_CHAR acSrcFileName[_MAX_PATH * 2];
 static MY_CHAR acDstFileName[_MAX_PATH * 2];
 static MY_CHAR acLogFileName[_MAX_PATH * 2];
+
+void traverseModelFile(A3DAsmModelFile* pModelFile)
+{
+	// Prepare Visitor container
+	A3DVisitorContainer sA3DVisitorContainer(CONNECT_TRANSFO);
+	sA3DVisitorContainer.SetTraverseInstance(true);
+
+	// Prepare Tree traverse visitor and set to the container
+	A3DTreeVisitor* pA3DTreeVisitor = new A3DTreeVisitor(&sA3DVisitorContainer);
+	sA3DVisitorContainer.push(pA3DTreeVisitor);
+
+	// Prepare model file connector and call Traverse
+	A3DModelFileConnector sModelFileConnector(pModelFile);
+	A3DStatus sStatus = sModelFileConnector.Traverse(&sA3DVisitorContainer);
+
+}
 
 //######################################################################################################################
 #ifdef _MSC_VER
@@ -92,7 +111,11 @@ int main(A3DInt32 iArgc, A3DUTF8Char** ppcArgv)
 	A3DExport sExport(acDstFileName); // see A3DSDKInternalConvert.hxx for import and export detailed parameters
 
 									  // perform conversion
-	CHECK_RET(sHoopsExchangeLoader.Convert(sImport, sExport));
+	CHECK_RET(sHoopsExchangeLoader.Import(sImport));
+
+	traverseModelFile(sHoopsExchangeLoader.m_psModelFile);
+
+	CHECK_RET(sHoopsExchangeLoader.Export(sExport));
 
 	//
 	// ### TERMINATE HOOPS EXCHANGE
