@@ -23,7 +23,7 @@
 
 #include "visitor/VisitorContainer.h"
 #include "visitor/VisitorTree.h"
-#include "myTreeVisitor.h"
+#include "MyTreeVisitor.h"
 
 static MY_CHAR acSrcFileName[_MAX_PATH * 2];
 static MY_CHAR acDstFileName[_MAX_PATH * 2];
@@ -36,13 +36,16 @@ void traverseModelFile(A3DAsmModelFile* pModelFile)
 	sA3DVisitorContainer.SetTraverseInstance(true);
 
 	// Prepare Tree traverse visitor and set to the container
-	myTreeVisitor* pMyTreeVisitor = new myTreeVisitor(&sA3DVisitorContainer);
+	MyTreeVisitor* pMyTreeVisitor = new MyTreeVisitor(&sA3DVisitorContainer);
 	sA3DVisitorContainer.push(pMyTreeVisitor);
 
 	// Prepare model file connector and call Traverse
 	A3DModelFileConnector sModelFileConnector(pModelFile);
 	A3DStatus sStatus = sModelFileConnector.Traverse(&sA3DVisitorContainer);
+	CHECK_RET(sStatus);
 
+	// The visitor container owns the visitor and deletes it in its destructor.
+	pMyTreeVisitor = nullptr;
 }
 
 //######################################################################################################################
