@@ -1,11 +1,11 @@
 #pragma once
 #include "visitor/VisitorTree.h"
-class myTreeVisitor :
+class MyTreeVisitor :
     public A3DTreeVisitor
 {
 public:
-	myTreeVisitor(A3DVisitorContainer* psContainer = NULL) : A3DTreeVisitor(psContainer) {};
-	~myTreeVisitor() {};
+	MyTreeVisitor(A3DVisitorContainer* psContainer = nullptr) : A3DTreeVisitor(psContainer) {};
+	~MyTreeVisitor() = default;
 
 	virtual A3DStatus visitEnter(const A3DProductOccurrenceConnector& sConnector) override;
 	virtual A3DStatus visitLeave(const A3DProductOccurrenceConnector& sConnector) override;
