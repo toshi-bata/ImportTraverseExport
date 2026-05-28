@@ -22,7 +22,6 @@
 #include <sstream>
 
 #include "visitor/VisitorContainer.h"
-#include "visitor/VisitorTree.h"
 #include "MyTreeVisitor.h"
 
 A3DPtr IAlloc(size_t in_size)
@@ -45,7 +44,7 @@ static MY_CHAR acLogFileName[_MAX_PATH * 2];
 void traverseModelFile(A3DAsmModelFile* pModelFile)
 {
 	// Prepare Visitor container
-	A3DVisitorContainer sA3DVisitorContainer(CONNECT_TRANSFO);
+	A3DVisitorContainer sA3DVisitorContainer(CONNECT_TRANSFO | CONNECT_COLORS);
 	sA3DVisitorContainer.SetTraverseInstance(true);
 
 	// Prepare Tree traverse visitor and set to the container

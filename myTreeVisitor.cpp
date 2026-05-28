@@ -1,4 +1,7 @@
 #include "MyTreeVisitor.h"
+#include "visitor/VisitorTree.h"
+#include "visitor/VisitorCascadedAttribute.h"
+#include "visitor/CascadedAttributeConnector.h"
 
 A3DStatus MyTreeVisitor::visitEnter(const A3DProductOccurrenceConnector& sConnector)
 {
@@ -27,7 +30,19 @@ A3DStatus MyTreeVisitor::visitEnter(const A3DProductOccurrenceConnector& sConnec
 	for (int i = 0; i < m_iLevel; i++)
 		_tprintf(_T("+ "));
 
-	_tprintf(_T("%s\n"), acName);
+	_tprintf(_T("%s"), acName);
+
+	A3DVisitorColorMaterials* pA3DCascadedVisitor = static_cast<A3DVisitorColorMaterials*>(m_psContainer->GetVisitorByName("CascadedAttribute"));
+	if (pA3DCascadedVisitor)
+	{
+		ColorMaterialsConnector sColorConnector(nullptr);
+		pA3DCascadedVisitor->GetColorMaterialConnector(sColorConnector);
+
+		if (sColorConnector.IsShow())
+			_tprintf(_T("\n"));
+		else
+			_tprintf(_T(" (Hidden)\n"));
+	}
 
 	return iRet;
 }
@@ -36,8 +51,8 @@ A3DStatus MyTreeVisitor::visitLeave(const A3DProductOccurrenceConnector& sConnec
 {
 	A3DStatus iRet = A3D_SUCCESS;
 
-		// Decrement level
-		m_iLevel--;
+	// Decrement level
+	m_iLevel--;
 
 	iRet = A3DTreeVisitor::visitLeave(sConnector);
 	return iRet;
