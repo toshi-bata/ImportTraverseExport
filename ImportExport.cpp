@@ -25,6 +25,19 @@
 #include "visitor/VisitorTree.h"
 #include "MyTreeVisitor.h"
 
+A3DPtr IAlloc(size_t in_size)
+{
+	return malloc(in_size);
+}
+A3DVoid IFree(
+	A3DPtr in_ptr)
+{
+	free(in_ptr);
+}
+
+A3DCallbackMemoryAlloc func_alloc = IAlloc;
+A3DCallbackMemoryFree func_free = IFree;
+
 static MY_CHAR acSrcFileName[_MAX_PATH * 2];
 static MY_CHAR acDstFileName[_MAX_PATH * 2];
 static MY_CHAR acLogFileName[_MAX_PATH * 2];
@@ -42,7 +55,6 @@ void traverseModelFile(A3DAsmModelFile* pModelFile)
 	// Prepare model file connector and call Traverse
 	A3DModelFileConnector sModelFileConnector(pModelFile);
 	A3DStatus sStatus = sModelFileConnector.Traverse(&sA3DVisitorContainer);
-	CHECK_RET(sStatus);
 
 	// The visitor container owns the visitor and deletes it in its destructor.
 	pMyTreeVisitor = nullptr;
@@ -102,7 +114,7 @@ int main(A3DInt32 iArgc, A3DUTF8Char** ppcArgv)
 	A3DSDKHOOPSExchangeLoader sHoopsExchangeLoader(bin_dir.str().data(), HOOPS_LICENSE);
 	CHECK_RET(sHoopsExchangeLoader.m_eSDKStatus);
 
-	CHECK_RET(A3DDllSetCallbacksMemory(CheckMalloc, CheckFree));
+	CHECK_RET(A3DDllSetCallbacksMemory(IAlloc, IFree));
 	CHECK_RET(A3DDllSetCallbacksReport(PrintLogMessage, PrintLogWarning, PrintLogError));
 
 	//
