@@ -4,6 +4,7 @@
 #include "visitor/CascadedAttributeConnector.h"
 #include "visitor/VisitorTransfo.h"
 #include "visitor/TransfoConnector.h"
+#include <memory>
 
 A3DStatus MyTreeVisitor::visitEnter(const A3DProductOccurrenceConnector& sConnector)
 {
@@ -57,18 +58,17 @@ A3DStatus MyTreeVisitor::visitEnter(const A3DPartConnector& sConnector)
 
 	// Get transform connector via transform visitor
 	A3DVisitorTransfo* psVisitorTransfo = static_cast<A3DVisitorTransfo*>(m_psContainer->GetVisitorByName("Transformation"));
-	if (!psVisitorTransfo)
-		return A3D_ERROR;
+	if (psVisitorTransfo)
+	{
+		std::unique_ptr<A3DTransfoConnector> pConnector(psVisitorTransfo->GetTransfoConnector());
+		A3DMatrix4x4 sTransfo;
+		pConnector->GetGlobalTransfo(sTransfo);
 
-	A3DTransfoConnector* pConnector = psVisitorTransfo->GetTransfoConnector();
-	A3DMatrix4x4 sTransfo;
-	pConnector->GetGlobalTransfo(sTransfo);
-	delete pConnector;
+		for (unsigned int i = 0; i < m_iLevel; i++)
+			_tprintf(_T("+ "));
 
-	for (unsigned int i = 0; i < m_iLevel; i++)
-		_tprintf(_T("+ "));
-
-	_tprintf(_T(" (%.3f, %.3f, %.3f)\n"), sTransfo.m_adM[12], sTransfo.m_adM[13], sTransfo.m_adM[14]);
+		_tprintf(_T(" (%.3f, %.3f, %.3f)\n"), sTransfo.m_adM[12], sTransfo.m_adM[13], sTransfo.m_adM[14]);
+	}
 
 	return iRet;
 }
