@@ -57,6 +57,9 @@ A3DStatus MyTreeVisitor::visitEnter(const A3DPartConnector& sConnector)
 
 	// Get transform connector via transform visitor
 	A3DVisitorTransfo* psVisitorTransfo = static_cast<A3DVisitorTransfo*>(m_psContainer->GetVisitorByName("Transformation"));
+	if (!psVisitorTransfo)
+		return A3D_ERROR;
+
 	A3DTransfoConnector* pConnector = psVisitorTransfo->GetTransfoConnector();
 	A3DMatrix4x4 sTransfo;
 	pConnector->GetGlobalTransfo(sTransfo);
