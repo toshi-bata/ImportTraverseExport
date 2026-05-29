@@ -19,7 +19,7 @@ A3DStatus MyTreeVisitor::visitEnter(const A3DProductOccurrenceConnector& sConnec
 	// Get RootBaseData of the PO
 	A3DRootBaseData sRootBaseData;
 	A3D_INITIALIZE_DATA(A3DRootBaseData, sRootBaseData);
-	A3DRootBaseGet(pPO, &sRootBaseData);
+	CHECK_RET(A3DRootBaseGet(pPO, &sRootBaseData));
 
 	// Get the PO name  
 	A3DUniChar acName[256];
@@ -33,6 +33,8 @@ A3DStatus MyTreeVisitor::visitEnter(const A3DProductOccurrenceConnector& sConnec
 		_tprintf(_T("+ "));
 
 	_tprintf(_T("%s"), acName);
+
+	A3DRootBaseGet(nullptr, &sRootBaseData);
 
 	A3DVisitorColorMaterials* pA3DCascadedVisitor = static_cast<A3DVisitorColorMaterials*>(m_psContainer->GetVisitorByName("CascadedAttribute"));
 	if (pA3DCascadedVisitor)
